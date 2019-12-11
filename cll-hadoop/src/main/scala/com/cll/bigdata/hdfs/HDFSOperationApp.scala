@@ -64,6 +64,8 @@ object HDFSOperationApp {
     // 创建指定路径
     fileSystem.mkdirs(new Path("dir"))
 
+    // TODO ...... 参考 org.apache.hadoop.fs.FileSystem 源码
+
     // 关闭资源
     fileSystem.close()
   }
