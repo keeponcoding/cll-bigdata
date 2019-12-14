@@ -1,4 +1,4 @@
-package com.cll.bigdata.core.cache
+package com.cll.bigdata.core.compare
 
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.{SparkConf, SparkContext}
@@ -10,7 +10,7 @@ import org.apache.spark.{SparkConf, SparkContext}
   * @Date 2019-12-14 15:25
   * @Version 1.0
   **/
-object CacheRDDApp {
+object CacheAndPersistApp {
 
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf().setAppName(this.getClass.getSimpleName).setMaster("local[2]")
