@@ -1,8 +1,8 @@
-package com.cll.bigdata.hdfs
+package com.cll.hadoop.hdfs
 
 import java.net.URI
 
-import com.cll.bigdata.hdfs.FileRenameApp.{HDFA_PATH, conf, fileSystem}
+import FileRenameApp.{HDFA_PATH, conf, fileSystem}
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.{FileSystem, Path}
 

@@ -1,4 +1,4 @@
-package com.cll.bigdata.util
+package com.cll.hadoop.util
 
 import java.net.URI
 
