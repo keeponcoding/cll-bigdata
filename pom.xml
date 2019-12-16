@@ -40,7 +40,7 @@
       <dependency>
         <groupId>org.apache.hadoop</groupId>
         <artifactId>hadoop-client</artifactId>
-        <version>2.6.0-cdh5.15.1</version>
+        <version>${hadoop.version}</version>
       </dependency>
 
       <!--spark-->
@@ -89,6 +89,20 @@
         <groupId>org.apache.spark</groupId>
         <artifactId>spark-streaming-flume_2.11</artifactId>
         <version>${spark.version}</version>
+      </dependency>
+
+      <!--zk curator 2.12.0 对应 zk 3.4.x 如果跨版本会有兼容问题 可能会导致操作节点失败的情况-->
+      <dependency>
+        <groupId>org.apache.curator</groupId>
+        <artifactId>curator-framework</artifactId>
+        <version>2.12.0</version>
+      </dependency>
+
+      <!--封装一些高级特性-->
+      <dependency>
+        <groupId>org.apache.curator</groupId>
+        <artifactId>curator-recipes</artifactId>
+        <version>2.12.0</version>
       </dependency>
 
     </dependencies>
