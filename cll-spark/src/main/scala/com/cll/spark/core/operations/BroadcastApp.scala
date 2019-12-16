@@ -16,7 +16,12 @@ object BroadcastApp {
     val conf = new SparkConf().setMaster("local[2]").setAppName(this.getClass.getSimpleName)
     val sc = new SparkContext(conf)
 
-    // 最佳实践 待广播的rdd.collectAsMap
+    /*
+     * rdd1 尾部不添加  .collectAsMap  会报错 如下：
+     * requirement failed: Can not directly broadcast RDDs; instead, call collect() and broadcast the result.
+     *
+     * 最佳实践 待广播的rdd.collectAsMap
+     */
     val rdd1 = sc.parallelize(Array(("1000","zhangsan"),("1001","lisi"))).collectAsMap()
     val rdd2 = sc.parallelize(Array(("1000","shanghai"),("1001","beijing"),("1003","shenzhen")))
     // 将rdd1广播出去
