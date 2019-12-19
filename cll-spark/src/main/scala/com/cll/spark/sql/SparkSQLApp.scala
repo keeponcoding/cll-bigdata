@@ -58,6 +58,26 @@ object SparkSQLApp {
     spark.sql("select name,age,addr from stu").show()
   }
 
+  /**
+    * csv
+    * @param spark
+    */
+  def csv(spark:SparkSession) = {
+    val file_path = "cll-spark/data/people.csv"
+    //spark.read.csv(file_path)
+    val df = spark.read
+      .format("csv")
+      // 以下查找 org.apache.spark.sql.execution.datasources.csv.CSVOptions
+      .option("sep",";")          // 指定分隔符 默认为 ,
+      .option("inferSchema",true) // 自动推导字段类型 默认为false 也就是所有字段默认为String
+      .option("header",true)      // 数据中第一行存在schema 默认为false 默认所有的行都为数据
+      .load(file_path)
+
+    df.printSchema()
+
+    df.show()
+  }
+
   def main(args: Array[String]): Unit = {
     /*
      * 2.0.0 之前的版本  new org.apache.spark.sql.SQLContext
@@ -73,7 +93,10 @@ object SparkSQLApp {
     //text(spark)
 
     // json
-    json(spark)
+    //json(spark)
+
+    // csv
+    csv(spark)
 
     spark.stop()
   }
