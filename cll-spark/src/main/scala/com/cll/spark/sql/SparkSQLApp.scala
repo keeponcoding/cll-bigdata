@@ -78,6 +78,20 @@ object SparkSQLApp {
     df.show()
   }
 
+  /**
+    * jdbc
+    * @param spark
+    */
+  def jdbc(spark: SparkSession) = {
+    //spark.read.jdbc()
+    spark.read.format("jdbc")
+      .option("url", "jdbc:mysql:dbserver")
+      .option("dbtable", "schema.tablename")
+      .option("user", "username")
+      .option("password", "password")
+      .load()
+  }
+
   def main(args: Array[String]): Unit = {
     /*
      * 2.0.0 之前的版本  new org.apache.spark.sql.SQLContext
@@ -89,6 +103,8 @@ object SparkSQLApp {
       //.enableHiveSupport() // 开启支持hive
       .getOrCreate()
 
+    // xxxOptions
+
     // 文本
     //text(spark)
 
@@ -96,7 +112,10 @@ object SparkSQLApp {
     //json(spark)
 
     // csv
-    csv(spark)
+    //csv(spark)
+
+    // jdbc
+    jdbc(spark)
 
     spark.stop()
   }
