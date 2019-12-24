@@ -45,7 +45,7 @@ object Line2ColApp {
 
     spark.createDataFrame(rowRDD,schema).createTempView("user_profile")
 
-    spark.sql(
+    /*spark.sql(
       """
         |select
         |  t.user
@@ -58,6 +58,16 @@ object Line2ColApp {
         |    ,explode(split(a.profile,',')) profile_kv
         |  from user_profile a
         |) t
+      """.stripMargin).show()*/
+
+    spark.sql(
+      """
+        |select
+        |  a.user
+        |  ,split(a.profile_kv,':')[0] profile_key
+        |  ,split(a.profile_kv,':')[1] profile_value
+        |from user_profile a
+        |lateral view explode(split(a.profile,',')) a as profile_kv
       """.stripMargin).show()
 
   }
