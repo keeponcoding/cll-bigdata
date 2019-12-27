@@ -5,7 +5,7 @@ import org.apache.spark.sql.{Row, SparkSession}
 
 /**
   * @ClassName Line2ColApp
-  * @Description 行转列
+  * @Description 列转行
   *
   * 表tmp两个字段 user,profile
   * user profile
@@ -25,7 +25,7 @@ import org.apache.spark.sql.{Row, SparkSession}
   * @Date 2019-12-24 20:28
   * @Version 1.0
   **/
-object Line2ColApp {
+object Col2LineApp {
 
   def main(args: Array[String]): Unit = {
 
