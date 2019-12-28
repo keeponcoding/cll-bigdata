@@ -22,6 +22,15 @@ object LogTrain {
 
     val sqlContext = spark.sqlContext
 
+    /*
+     * 传递参数
+     * 方式一
+     * --conf spark.app.inputPath=
+     * --conf spark.app.outputPath=
+     *
+     * 方式二
+     * args
+     */
     // 输入文件
     val inputPath = sqlContext.getConf("spark.app.inputPath")
     // 输出文件

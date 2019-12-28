@@ -19,8 +19,22 @@ object DFToMysql {
 
   def main(args: Array[String]): Unit = {
     val spark = SparkSession.builder().enableHiveSupport().getOrCreate()
+
+    /*
+     * 传递参数
+     * 方式一
+     * --conf spark.app.day=
+     * --conf spark.app.hour=
+     *
+     * 方式二
+     * args
+     */
     val day = spark.sqlContext.getConf("spark.app.day")
     val hour = spark.sqlContext.getConf("spark.app.hour")
+
+    //val day = args(0)
+    //val hour = args(1)
+
     val df = spark.sql(s"select * from cll.loginCount where day='${day}' and hour='${hour}'")
     // TODO 先把MySQL中 day='${day}' and hour='${hour}'的数据进行删掉
     // 方法一
