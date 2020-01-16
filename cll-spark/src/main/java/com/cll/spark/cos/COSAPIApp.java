@@ -4,10 +4,10 @@ import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.auth.BasicCOSCredentials;
 import com.qcloud.cos.auth.COSCredentials;
-import com.qcloud.cos.model.Bucket;
-import com.qcloud.cos.model.CreateBucketRequest;
+import com.qcloud.cos.model.*;
 import com.qcloud.cos.region.Region;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -23,7 +23,62 @@ public class COSAPIApp {
 
         //System.out.println(getCOSClient());
         //createBucket();
-        listBucket();
+        //listBucket();
+        //doesBucketExist("cll1-1257466126");
+        //deleteBucket("cll1-1257466126");
+        upload("cll-1257466126","cll-spark/data/people.csv");
+    }
+
+    public static void download(String bucketName, String key){
+        COSClient cosClient = getCOSClient();
+
+        GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, key);
+        COSObject object = cosClient.getObject(getObjectRequest);
+
+
+        cosClient.shutdown();
+    }
+
+    /**
+     * 上传
+     * @param bucketName
+     * @param pathName
+     */
+    public static void upload(String bucketName, String pathName){
+        COSClient cosClient = getCOSClient();
+
+        File file = new File(pathName);
+        String key = "peoplecsv";
+        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName,key,file);
+        cosClient.putObject(putObjectRequest);
+
+        cosClient.shutdown();
+    }
+
+    /**
+     * 删除桶
+     * @param bucketName
+     */
+    public static void deleteBucket(String bucketName){
+        COSClient cosClient = getCOSClient();
+
+        cosClient.deleteBucket(bucketName); // 如果桶内有对象  会抛出异常
+
+        cosClient.shutdown();
+    }
+
+    /**
+     * 判断bucket是否存在
+     * @param bucketName
+     */
+    public static void doesBucketExist(String bucketName){
+        COSClient cosClient = getCOSClient();
+
+        boolean bucketExist = cosClient.doesBucketExist(bucketName);
+
+        System.out.println(bucketExist);
+
+        cosClient.shutdown();
     }
 
     /**
@@ -33,8 +88,8 @@ public class COSAPIApp {
         COSClient cosClient = getCOSClient();
         List<Bucket> buckets = cosClient.listBuckets();
         for (Bucket bucket : buckets) {
-            String location = bucket.getLocation();
-            String name = bucket.getName();
+            String location = bucket.getLocation(); // 位置
+            String name = bucket.getName(); // 名称
             System.out.println(name + "--->" + location);
         }
         cosClient.shutdown();
