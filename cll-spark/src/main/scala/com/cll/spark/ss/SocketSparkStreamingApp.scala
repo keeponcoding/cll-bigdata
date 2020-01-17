@@ -25,7 +25,7 @@ object SocketSparkStreamingApp {
 
     val lines = ssc.socketTextStream("hadoop000",9999)
     log.warn("lines:{"+lines+"}")
-    val words = lines.flatMap(a => a.split(","))
+    val words = lines.flatMap(a => a.split(",")).persist()
     log.warn("words:{"+words+"}")
     val pairs = words.map((_,1))
     log.warn("pairs:{"+pairs+"}")
