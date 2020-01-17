@@ -1,5 +1,6 @@
 package com.cll.hadoop.mr;
 
+import com.cll.hadoop.util.FileUtil;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -22,7 +23,7 @@ import java.io.IOException;
  **/
 public class WordCountApp {
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
+    public static void main(String[] args) throws Exception{
         // STEP 1 initial Configuration  get job instance
         Configuration conf = new Configuration();
         Job job = Job.getInstance(conf);
@@ -45,6 +46,9 @@ public class WordCountApp {
         // STEP 6 set input output path
         String input = "cll-hadoop/data/wc.data";
         String output = "cll-hadoop/data/output/";
+
+        FileUtil.deleteTarget(output,conf);
+
         FileInputFormat.setInputPaths(job, new Path(input));
         FileOutputFormat.setOutputPath(job, new Path(output));
 
@@ -58,8 +62,10 @@ public class WordCountApp {
      * VALUEIN     输入数据value的数据类型     每行数据内容
      * KEYOUT      输出数据key的数据类型       输出的每个单词
      * VALUEOUT    输出数据value的数据类型     输出的每个单词的次数
+     *
+     * MyMapper 用static修饰
      */
-    public class MyMapper extends Mapper<LongWritable, Text, Text, IntWritable>{
+    public static class MyMapper extends Mapper<LongWritable, Text, Text, IntWritable>{
         @Override
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             // Text value 就是每行数据
@@ -73,8 +79,10 @@ public class WordCountApp {
 
     /**
      * reducer 的输入就是 Mapper 的输出
+     *
+     * MyReducer 用static修饰
      */
-    public class MyReducer extends Reducer<Text, IntWritable, Text, IntWritable>{
+    public static class MyReducer extends Reducer<Text, IntWritable, Text, IntWritable>{
 
         @Override
         protected void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
@@ -104,6 +112,8 @@ public class WordCountApp {
             for (IntWritable i : values) {
                 cnt += i.get();
             }
+
+            // System.out.println("...key..."+key);
 
             context.write(key, new IntWritable(cnt));
         }
