@@ -16,6 +16,7 @@
     <spark.version>2.4.2</spark.version>
     <commons.version>3.9</commons.version>
     <hadoop.version>2.6.0-cdh5.15.1</hadoop.version>
+    <scalikejdbc.version>3.3.1</scalikejdbc.version>
   </properties>
 
   <!--添加cdh仓库地址-->
@@ -105,6 +106,41 @@
         <version>2.12.0</version>
       </dependency>
 
+      <!--腾讯云 对象存储-->
+      <dependency>
+        <groupId>com.qcloud</groupId>
+        <artifactId>cos_api</artifactId>
+        <version>5.6.8</version>
+      </dependency>
+
+      <!--scala-jdbc-scalike操作jdbc数据库-->
+      <dependency>
+        <groupId>org.scalikejdbc</groupId>
+        <artifactId>scalikejdbc_2.11</artifactId>
+        <version>${scalikejdbc.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.scalikejdbc</groupId>
+        <artifactId>scalikejdbc-core_2.11</artifactId>
+        <version>${scalikejdbc.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.scalikejdbc</groupId>
+        <artifactId>scalikejdbc-config_2.11</artifactId>
+        <version>${scalikejdbc.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>3.9</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.spark</groupId>
+        <artifactId>spark-yarn_2.11</artifactId>
+        <version>${spark.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
