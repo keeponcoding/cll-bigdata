@@ -1,4 +1,4 @@
-package com.cll.hadoop.mr;
+package com.cll.hadoop.mr.ser;
 
 import com.cll.hadoop.domain.AccessLog;
 import com.cll.hadoop.util.FileUtil;
