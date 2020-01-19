@@ -1,11 +1,10 @@
-package com.cll.hadoop.mr.ser;
+package com.cll.hadoop.mr.sort.group;
 
-import com.cll.hadoop.domain.AccessLog;
+import com.cll.hadoop.mr.sort.AccessSort;
 import com.cll.hadoop.util.FileUtil;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
-import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -17,12 +16,12 @@ import java.io.IOException;
 
 /**
  * @ClassName AccessGlobalSortApp
- * @Description TODO
+ * @Description 分组排序
  * @Author cll
  * @Date 2020-01-17 22:17
  * @Version 1.0
  **/
-public class AccessLogApp {
+public class AccessGroupSortApp {
 
     public static void main(String[] args) throws Exception {
         // STEP 1 initial Configuration  get job instance
@@ -30,25 +29,29 @@ public class AccessLogApp {
         Job job = Job.getInstance(conf);
 
         // STEP 2 set jar info
-        job.setJarByClass(AccessLogApp.class);
+        job.setJarByClass(AccessGroupSortApp.class);
 
         // STEP 3 set custome Mapper Reducer
-        job.setMapperClass(AccessLogMapper.class);
-        job.setReducerClass(AccessLogReducer.class);
+        job.setMapperClass(AccessGroupSortMapper.class);
+        job.setReducerClass(AccessGroupSortReducer.class);
 
         // STEP 4 set Mapper output key/value type
-        job.setMapOutputKeyClass(Text.class);
-        job.setMapOutputValueClass(AccessLog.class);
+        job.setMapOutputKeyClass(AccessSort.class);
+        job.setMapOutputValueClass(Text.class);
 
         // STEP 5 set Reducer output key/value type
-        job.setOutputKeyClass(NullWritable.class);
-        job.setOutputValueClass(AccessLog.class);
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(AccessSort.class);
 
         // STEP 6 set input output path
         String input = "cll-hadoop/data/access.log";
         String output = "cll-hadoop/data/output/";
 
         FileUtil.deleteTarget(output,conf);
+
+        // 设置自定义分区器
+        job.setPartitionerClass(AccessPartitioner.class);
+        job.setNumReduceTasks(3);
 
         FileInputFormat.setInputPaths(job, new Path(input));
         FileOutputFormat.setOutputPath(job, new Path(output));
@@ -59,39 +62,32 @@ public class AccessLogApp {
     }
 
     /*
-     *
+     * 排序 需要根据 key 进行排序
+     * 所以Mapper的输出 就是自定义类
      */
-    public static class AccessLogMapper extends Mapper<LongWritable, Text, Text, AccessLog>{
+    public static class AccessGroupSortMapper extends Mapper<LongWritable, Text, AccessSort, Text>{
 
         @Override
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-
             String[] splits = value.toString().split(" ");
             String phone = splits[0];
             long down = Long.valueOf(splits[splits.length-3]);
             long up = Long.valueOf(splits[splits.length-2]);
-            context.write(new Text(phone),new AccessLog(phone,up,down));
+            context.write(new AccessSort(phone,up,down), new Text(phone));
         }
     }
 
     /*
      *
      */
-    public static class AccessLogReducer extends Reducer<Text, AccessLog, NullWritable, AccessLog>{
+    public static class AccessGroupSortReducer extends Reducer<AccessSort, Text, Text, AccessSort>{
 
         @Override
-        protected void reduce(Text key, Iterable<AccessLog> values, Context context) throws IOException, InterruptedException {
-            // 初始化 上限 下限
-            long ups = 0;
-            long downs = 0;
+        protected void reduce(AccessSort key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
 
-            // 累加操作
-            for (AccessLog accessLog : values){
-                ups += accessLog.getUp();
-                downs += accessLog.getDown();
+            for (Text value : values){
+                context.write(value, key);
             }
-
-            context.write(NullWritable.get(), new AccessLog(key.toString(), ups, downs));
         }
     }
 

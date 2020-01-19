@@ -1,6 +1,6 @@
-package com.cll.hadoop.domain;
+package com.cll.hadoop.mr.sort;
 
-import org.apache.hadoop.io.Writable;
+import org.apache.hadoop.io.WritableComparable;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -11,12 +11,11 @@ import java.io.IOException;
  * @Description 访问日志 实体类
  *     该类需要实现 Writable 接口 并实现 write readFields 方法
  *
- *     TODO 一定要实现 Writable 接口
  * @Author cll
  * @Date 2020-01-17 22:17
  * @Version 1.0
  **/
-public class AccessLog implements Writable {
+public class AccessSort implements WritableComparable<AccessSort> {
 
     private String phone;
     private Long up;
@@ -26,10 +25,10 @@ public class AccessLog implements Writable {
     /*
      * 该空构造必须加上
      */
-    public AccessLog() {
+    public AccessSort() {
     }
 
-    public AccessLog(String phone, Long up, Long down){
+    public AccessSort(String phone, Long up, Long down){
         this.phone = phone;
         this.up = up;
         this.down = down;
@@ -92,11 +91,10 @@ public class AccessLog implements Writable {
 
     @Override
     public String toString() {
-        return "AccessSort{" +
-                "phone='" + phone + '\'' +
-                ", up=" + up +
-                ", down=" + down +
-                ", sum=" + sum +
-                '}';
+        return phone + '\t' + up + "\t" + down + "\t" + sum;
+    }
+
+    public int compareTo(AccessSort o) {
+        return this.getSum() > o.sum ? -1 : 1;
     }
 }

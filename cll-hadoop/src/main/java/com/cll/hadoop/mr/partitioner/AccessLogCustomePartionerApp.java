@@ -1,4 +1,4 @@
-package com.cll.hadoop.mr.ser;
+package com.cll.hadoop.mr.partitioner;
 
 import com.cll.hadoop.domain.AccessLog;
 import com.cll.hadoop.util.FileUtil;
@@ -22,7 +22,7 @@ import java.io.IOException;
  * @Date 2020-01-17 22:17
  * @Version 1.0
  **/
-public class AccessLogApp {
+public class AccessLogCustomePartionerApp {
 
     public static void main(String[] args) throws Exception {
         // STEP 1 initial Configuration  get job instance
@@ -30,7 +30,7 @@ public class AccessLogApp {
         Job job = Job.getInstance(conf);
 
         // STEP 2 set jar info
-        job.setJarByClass(AccessLogApp.class);
+        job.setJarByClass(AccessLogCustomePartionerApp.class);
 
         // STEP 3 set custome Mapper Reducer
         job.setMapperClass(AccessLogMapper.class);
@@ -52,6 +52,11 @@ public class AccessLogApp {
 
         FileInputFormat.setInputPaths(job, new Path(input));
         FileOutputFormat.setOutputPath(job, new Path(output));
+
+        // reducer数 可以设置大于 分区数
+        //           不可以设置小于 分区数 但是可以设置为1
+        job.setPartitionerClass(AccessLogPartitioner.class); // 设置自定义分区器
+        job.setNumReduceTasks(3); // 设置reducer数
 
         // STEP 7 提交job
         boolean result = job.waitForCompletion(true);
