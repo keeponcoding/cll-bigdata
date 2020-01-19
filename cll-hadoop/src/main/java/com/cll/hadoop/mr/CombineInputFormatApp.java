@@ -22,7 +22,7 @@ import java.io.IOException;
  * @Date 2020-01-17 15:10
  * @Version 1.0
  **/
-public class CombineApp {
+public class CombineInputFormatApp {
 
     public static void main(String[] args) throws Exception{
         // STEP 1 initial Configuration  get job instance
@@ -30,7 +30,7 @@ public class CombineApp {
         Job job = Job.getInstance(conf);
 
         // STEP 2 set jar info
-        job.setJarByClass(CombineApp.class);
+        job.setJarByClass(CombineInputFormatApp.class);
 
         // STEP 3 set custome Mapper Reducer
        job.setMapperClass(MyMapper.class);
