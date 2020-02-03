@@ -80,6 +80,12 @@
             <artifactId>spark-yarn_2.11</artifactId>
         </dependency>
 
+        <!--jedis-->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

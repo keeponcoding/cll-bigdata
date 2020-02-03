@@ -141,6 +141,13 @@
         <artifactId>spark-yarn_2.11</artifactId>
         <version>${spark.version}</version>
       </dependency>
+
+      <!--jedis-->
+      <dependency>
+        <groupId>redis.clients</groupId>
+        <artifactId>jedis</artifactId>
+        <version>3.1.0</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
