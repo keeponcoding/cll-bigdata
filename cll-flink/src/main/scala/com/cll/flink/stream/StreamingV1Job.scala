@@ -10,7 +10,7 @@ import org.apache.flink.api.scala._
  * @Date 2020/2/10 10:29 上午
  * @Version 1.0
  **/
-object StreamingJob {
+object StreamingV1Job {
 
   def main(args: Array[String]): Unit = {
     val env = StreamExecutionEnvironment.getExecutionEnvironment
