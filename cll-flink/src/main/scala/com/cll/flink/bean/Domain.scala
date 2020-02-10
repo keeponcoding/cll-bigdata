@@ -13,4 +13,6 @@ object Domain {
 
   case class Access(time:Long, site:String, traffic:Int)
 
+  case class Student(id:Int, name:String, age:Int)
+
 }
