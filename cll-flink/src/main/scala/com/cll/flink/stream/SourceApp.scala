@@ -28,12 +28,12 @@ object SourceApp {
     /*
      * TODO 添加自定义MySQL Source
      */
-//    env.addSource(new MySQLSource).print()
+    env.addSource(new MySQLSource).print()
 
     /*
      * TODO kafka source
      */
-    val properties = new Properties()
+    /*val properties = new Properties()
     properties.setProperty("bootstrap.servers", "hadoop000:9092")
     // only required for Kafka 0.8
     //properties.setProperty("zookeeper.connect", "localhost:2181")
@@ -45,7 +45,7 @@ object SourceApp {
     // consumer.setStartFromTimestamp(System.currentTimeMillis())  // start from specified epoch timestamp (milliseconds)
     // consumer.setStartFromGroupOffsets()  // the default behaviour
 
-    env.addSource(consumer).print()
+    env.addSource(consumer).print()*/
 
 
     env.execute(this.getClass.getSimpleName)

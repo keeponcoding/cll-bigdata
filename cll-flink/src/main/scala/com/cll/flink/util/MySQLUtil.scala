@@ -13,7 +13,7 @@ import java.sql.{Connection, DriverManager, PreparedStatement}
 object MySQLUtil {
 
   val JDBC_DRIVER = "com.mysql.jdbc.Driver"
-  val JDBC_URL = "jdbc:mysql://hadoop000:3306/ruozedata_ba"
+  val JDBC_URL = "jdbc:mysql://hadoop000:3306/cll"
   val JDBC_USER = "root"
   val JDBC_PASSWORD = "123456"
 

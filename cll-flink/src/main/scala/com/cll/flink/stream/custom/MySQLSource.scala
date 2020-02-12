@@ -2,7 +2,7 @@ package com.cll.flink.stream.custom
 
 import java.sql.{Connection, PreparedStatement}
 
-import com.cll.flink.bean.Domain.Student
+import com.cll.flink.bean.Domain.{User}
 import com.cll.flink.util.MySQLUtil
 import org.apache.flink.configuration.Configuration
 import org.apache.flink.streaming.api.functions.source.{RichSourceFunction, SourceFunction}
@@ -14,7 +14,7 @@ import org.apache.flink.streaming.api.functions.source.{RichSourceFunction, Sour
  * @Date 2020/2/10 7:58 下午
  * @Version 1.0
  **/
-class MySQLSource extends RichSourceFunction[Student]{
+class MySQLSource extends RichSourceFunction[User]{
 
   var conn:Connection = _
   var pstmt:PreparedStatement = _
@@ -23,7 +23,7 @@ class MySQLSource extends RichSourceFunction[Student]{
   override def open(parameters: Configuration): Unit = {
     super.open(parameters)
     conn = MySQLUtil.getConnection()
-    pstmt = conn.prepareStatement("select * from student")
+    pstmt = conn.prepareStatement("select * from t_user")
   }
 
   // 释放连接
@@ -32,11 +32,11 @@ class MySQLSource extends RichSourceFunction[Student]{
     MySQLUtil.close(conn,pstmt)
   }
 
-  override def run(ctx: SourceFunction.SourceContext[Student]): Unit = {
+  override def run(ctx: SourceFunction.SourceContext[User]): Unit = {
     val rs = pstmt.executeQuery()
     while (rs.next()){
-      val student = Student(rs.getInt("id"), rs.getString("name"), rs.getInt("age"))
-      ctx.collect(student)
+      val user = User(rs.getInt("id"), rs.getString("name"), rs.getInt("order_no"))
+      ctx.collect(user)
     }
   }
 
