@@ -15,4 +15,6 @@ object Domain {
 
   case class Student(id:Int, name:String, age:Int)
 
+  case class User(id:Int, name:String, order_no:Int)
+
 }
