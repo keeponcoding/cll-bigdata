@@ -1,18 +1,18 @@
-package com.cll.flink.stream.custom
+package com.cll.flink.stream.source
 
 import java.util.Random
 
 import com.cll.flink.bean.Domain.Access
-import org.apache.flink.streaming.api.functions.source.{ParallelSourceFunction, SourceFunction}
+import org.apache.flink.streaming.api.functions.source.SourceFunction
 
 /**
  * @ClassName AccessSource
- * @Description 自定义Source   ParallelSourceFunction
+ * @Description 自定义Source
  * @Author cll
  * @Date 2020/2/10 3:25 下午
  * @Version 1.0
  **/
-class ParallelAccessSource extends ParallelSourceFunction[Access]{
+class AccessSource extends SourceFunction[Access]{
 
   var running = true
 

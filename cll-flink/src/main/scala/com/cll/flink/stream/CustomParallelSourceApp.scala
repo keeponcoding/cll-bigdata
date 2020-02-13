@@ -1,6 +1,6 @@
 package com.cll.flink.stream
 
-import com.cll.flink.stream.custom.{AccessSource, ParallelAccessSource}
+import com.cll.flink.stream.source.ParallelAccessSource
 import org.apache.flink.api.scala._
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 

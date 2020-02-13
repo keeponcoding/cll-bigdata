@@ -2,7 +2,7 @@ package com.cll.flink.stream
 
 import java.util.Properties
 
-import com.cll.flink.stream.custom.MySQLSource
+import com.cll.flink.stream.source.MySQLSource
 import org.apache.flink.api.common.serialization.SimpleStringSchema
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.api.scala._

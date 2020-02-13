@@ -1,8 +1,8 @@
-package com.cll.flink.stream.custom
+package com.cll.flink.stream.source
 
 import java.sql.{Connection, PreparedStatement}
 
-import com.cll.flink.bean.Domain.{User}
+import com.cll.flink.bean.Domain.User
 import com.cll.flink.util.MySQLUtil
 import org.apache.flink.configuration.Configuration
 import org.apache.flink.streaming.api.functions.source.{RichSourceFunction, SourceFunction}
@@ -21,14 +21,12 @@ class MySQLSource extends RichSourceFunction[User]{
 
   // 获取连接
   override def open(parameters: Configuration): Unit = {
-    super.open(parameters)
     conn = MySQLUtil.getConnection()
     pstmt = conn.prepareStatement("select * from t_user")
   }
 
   // 释放连接
   override def close(): Unit = {
-    super.close()
     MySQLUtil.close(conn,pstmt)
   }
 

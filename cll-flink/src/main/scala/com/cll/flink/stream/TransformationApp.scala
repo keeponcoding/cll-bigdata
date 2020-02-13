@@ -1,8 +1,8 @@
 package com.cll.flink.stream
 
 import com.cll.flink.bean.Domain.Access
-import com.cll.flink.stream.custom.AccessSource
 import com.cll.flink.stream.partitioner.AccessPartitioner
+import com.cll.flink.stream.source.AccessSource
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.api.scala._
 

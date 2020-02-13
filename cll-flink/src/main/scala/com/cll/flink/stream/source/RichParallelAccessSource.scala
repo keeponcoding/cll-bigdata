@@ -1,4 +1,4 @@
-package com.cll.flink.stream.custom
+package com.cll.flink.stream.source
 
 import java.util.Random
 
