@@ -9,7 +9,7 @@ package com.cll.flink.bean
  **/
 object Domain {
 
-  case class WC(word:String, count:Int)
+  case class WC(word:String, cnt:Int)
 
   case class Access(time:Long, site:String, traffic:Int)
 
