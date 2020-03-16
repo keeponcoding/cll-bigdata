@@ -1,6 +1,6 @@
-package com.cll.hadoop.mr.wc;
+package com.cll.flink.mr.wc;
 
-import com.cll.hadoop.util.FileUtil;
+import com.cll.flink.util.FileUtil;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -10,18 +10,19 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.NLineInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 import java.io.IOException;
 
 /**
  * @ClassName WordCountApp
- * @Description map reduce
+ * @Description 按照行进行切分  NLineInputFormatApp
  * @Author cll
  * @Date 2020-01-17 15:10
  * @Version 1.0
  **/
-public class WordCountApp {
+public class NLineInputFormatApp {
 
     public static void main(String[] args) throws Exception{
         // STEP 1 initial Configuration  get job instance
@@ -29,7 +30,7 @@ public class WordCountApp {
         Job job = Job.getInstance(conf);
 
         // STEP 2 set jar info
-        job.setJarByClass(WordCountApp.class);
+        job.setJarByClass(NLineInputFormatApp.class);
 
         // STEP 3 set custome Mapper Reducer
        job.setMapperClass(MyMapper.class);
@@ -44,10 +45,20 @@ public class WordCountApp {
         job.setOutputValueClass(IntWritable.class);
 
         // STEP 6 set input output path
-        String input = "cll-hadoop/data/wc.data";
+        String input = "cll-hadoop/data/small/1.txt";
         String output = "cll-hadoop/data/output/";
 
         FileUtil.deleteTarget(output,conf);
+
+        job.setInputFormatClass(NLineInputFormat.class);
+        /*
+         * 设置最大的 MaxInputSplitSize
+         *
+         * 原文件是 23w
+         * 按照 10w进行切分的话  就是number of splits:3
+         * 按照 20w进行切分的话  就是number of splits:2
+         */
+        NLineInputFormat.setNumLinesPerSplit(job, 200000);
 
         FileInputFormat.setInputPaths(job, new Path(input));
         FileOutputFormat.setOutputPath(job, new Path(output));
