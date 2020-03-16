@@ -1,4 +1,4 @@
-package com.cll.hadoop.mr.sort;
+package com.cll.flink.mr.sort;
 
 import org.apache.hadoop.io.WritableComparable;
 

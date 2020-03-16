@@ -1,7 +1,6 @@
-package com.cll.hadoop.mr.sort.group;
+package com.cll.flink.mr.sort.group;
 
-import com.cll.hadoop.domain.AccessLog;
-import com.cll.hadoop.mr.sort.AccessSort;
+import com.cll.flink.mr.sort.AccessSort;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Partitioner;
 

@@ -1,7 +1,7 @@
-package com.cll.hadoop.mr.sort.global;
+package com.cll.flink.mr.sort.global;
 
-import com.cll.hadoop.mr.sort.AccessSort;
-import com.cll.hadoop.util.FileUtil;
+import com.cll.flink.mr.sort.AccessSort;
+import com.cll.flink.util.FileUtil;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
