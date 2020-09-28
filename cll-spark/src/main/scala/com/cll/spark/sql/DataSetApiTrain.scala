@@ -1,16 +1,16 @@
 package com.cll.spark.sql
 
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.functions.{col, expr}
 
 /**
- * @ClassName EasyDataSetApiTrain
+ * @ClassName DataSetApiTrain
  * @Description TODO
  * @Author cll
  * @Date 2020/9/28 9:09 上午
  * @Version 1.0
  **/
-object EasyDataSetApiTrain {
+object DataSetApiTrain {
 
   def main(args: Array[String]): Unit = {
     val spark = SparkSession.builder()
@@ -28,6 +28,91 @@ object EasyDataSetApiTrain {
       )
     ).toDF("city", "year", "amount")
 
+    // easy(sales)
+
+    complex(sales,spark)
+
+    sc.stop()
+  }
+
+  /**
+   * 复杂API练习
+   * @param sales
+   */
+  def complex(sales: DataFrame, spark:SparkSession) = {
+    /*
+     * cube
+     * 维度及度量组成的数据体
+     */
+    /*sales.cube("city", "year")
+      .sum("amount")
+      .sort(col("city").desc_nulls_first, col("year").desc_nulls_first)
+      .show()*/
+
+
+    /*
+     * ★
+     * pivot
+     * 旋转操作
+     */
+    val df = spark.createDataFrame(
+      Seq(
+        ("1", "zhangsan", 10, 20, 30),
+        ("2", "lisi", 40, 50, 60),
+        ("3", "wanger", 70, 80, 90),
+        ("4", "mazi", 11, 22, 33),
+        ("5", "xiaoming", 110, 120, 130)
+      )
+    ).toDF("id", "name", "Chinese", "Math", "English")
+
+    df.show()
+
+    df.createOrReplaceTempView("stu")
+
+    /*
+     * 列转行
+     */
+    // 纯sql 写法
+    val df1 = spark.sql(
+      """
+        |select
+        |id
+        |,name
+        |,stack(3,
+        |       '语文',Chinese,
+        |       '数学',Math,
+        |       '英语',English
+        |       ) as (xk,score)
+        |from stu
+        |""".stripMargin)
+    df1.createOrReplaceTempView("stu_df1")
+    df1.show(false)
+
+    // select 表达式写法
+    // spark 中没有提供 unpivot   可以使用 stack 完成相同的效果
+    df.selectExpr("id","name",
+                  "stack(3,'语文',Chinese,'数学',Math,'英语',English) as (`学科`,score)"
+    ).show()
+
+    // 行转列
+    spark.sql(
+      """
+        |select
+        |*
+        |from stu_df1
+        |pivot(
+        |  -- xk in (对应的是行值，取出哪些行 作为列值，如果没有对应行 置null)
+        |  max(score) for xk in ('语文','数学','英语')
+        |)
+        |""".stripMargin).show()
+
+  }
+
+  /**
+   * 简单API 练习
+   * @param sales
+   */
+  def easy(sales: DataFrame) = {
     /*
      * select
      * 列名称可以是字符串，这种形式无法对列名称使用表达式进行逻辑操作
@@ -60,7 +145,7 @@ object EasyDataSetApiTrain {
      * 假如列，存在就替换，不存在新增 withColumnRenamed 对已有的列进行重命名
      */
     println(" withColumn example: ")
-     //相当于给原来amount列，+1
+    //相当于给原来amount列，+1
     sales.withColumn("amount",col("amount")+1).show()
     // 对amount列+1，然后将值增加到一个新列 amount1
     sales.withColumn("amount1",col("amount")+1).show()
@@ -90,8 +175,6 @@ object EasyDataSetApiTrain {
      */
     sales.sortWithinPartitions(col("year").desc,col("amount").asc).explain()
 
-
-    sc.stop()
   }
 
 }
