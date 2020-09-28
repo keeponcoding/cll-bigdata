@@ -55,7 +55,7 @@ object DataSetApiTrain {
      * pivot
      * 旋转操作
      */
-    val df = spark.createDataFrame(
+    /*val df = spark.createDataFrame(
       Seq(
         ("1", "zhangsan", 10, 20, 30),
         ("2", "lisi", 40, 50, 60),
@@ -92,9 +92,35 @@ object DataSetApiTrain {
     // spark 中没有提供 unpivot   可以使用 stack 完成相同的效果
     df.selectExpr("id","name",
                   "stack(3,'语文',Chinese,'数学',Math,'英语',English) as (`学科`,score)"
-    ).show()
+    ).show()*/
 
-    // 行转列
+    /*
+     * 行转列
+     */
+    val df = spark.createDataFrame(
+      Seq(
+        ("1", "zhangsan", "语文", 10),
+        ("1", "zhangsan", "数学", 20),
+        ("1", "zhangsan", "英语", 30),
+        ("2", "lisi", "语文", 40),
+        ("2", "lisi", "数学", 50),
+        ("2", "lisi", "英语", 60),
+        ("3", "wanger", "语文", 70),
+        ("3", "wanger", "数学", 80),
+        ("3", "wanger", "英语", 90),
+        ("4", "mazi", "语文", 11),
+        ("4", "mazi", "数学", 22),
+        ("4", "mazi", "英语", 33),
+        ("5", "xiaoming", "语文", 110),
+        ("5", "xiaoming", "数学", 120),
+        ("5", "xiaoming", "英语", 130)
+      )
+    ).toDF("id", "name", "xk", "score")
+
+    df.show()
+
+    df.createOrReplaceTempView("stu_df1")
+
     spark.sql(
       """
         |select
